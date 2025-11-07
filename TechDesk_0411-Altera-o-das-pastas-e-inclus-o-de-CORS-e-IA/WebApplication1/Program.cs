@@ -11,6 +11,17 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
 
+// ConfiguraÃ§Ã£o do CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -18,11 +29,11 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "TechDesk",
         Version = "v1",
-        Description = "API de Suporte Técnico - TechDesk"
+        Description = "API de Suporte Tï¿½cnico - TechDesk"
     });
 });
 
-// Configuração do DbContext com a connection string do appsettings.json
+// Configuraï¿½ï¿½o do DbContext com a connection string do appsettings.json
 builder.Services.AddDbContext<TechDeskDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -32,12 +43,8 @@ builder.Services.AddDbContext<TechDeskDbContext>(options =>
 
 var app = builder.Build();
 
-app.UseCors(builder =>
-{
-    builder.AllowAnyOrigin()
-           .AllowAnyMethod()
-           .AllowAnyHeader();
-});
+// Aplicar polÃ­tica CORS
+app.UseCors("AllowAll");
 
 if (app.Environment.IsDevelopment())
 {
