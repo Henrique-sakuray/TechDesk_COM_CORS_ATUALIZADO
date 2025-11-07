@@ -43,17 +43,17 @@ builder.Services.AddDbContext<TechDeskDbContext>(options =>
 
 var app = builder.Build();
 
-// Aplicar política CORS
-app.UseCors("AllowAll");
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-
 app.UseHttpsRedirection();
+
+// Aplicar política CORS
+app.UseCors("AllowAll");
+
 app.UseAuthorization();
 
 
